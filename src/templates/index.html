@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACEestFitness and Gym</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        .message {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background: #f4f4f4;
+            padding: 10px;
+            margin-bottom: 5px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ACEestFitness and Gym</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <h2>Add Workout</h2>
+        <form action="{{ url_for('index') }}" method="post">
+            <label for="workout">Workout:</label>
+            <input type="text" id="workout" name="workout" required>
+            <br><br>
+            <label for="duration">Duration (minutes):</label>
+            <input type="text" id="duration" name="duration" required>
+            <br><br>
+            <button type="submit">Add Workout</button>
+        </form>
+
+        <hr>
+
+        <h2>Logged Workouts</h2>
+        {% if workouts %}
+            <ul>
+                {% for entry in workouts %}
+                    <li>{{ loop.index }}. {{ entry.workout }} - {{ entry.duration }} minutes</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No workouts logged yet.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
