@@ -1,14 +1,11 @@
 import pytest
-import tkinter as tk
-from src.ACEest_Fitness import FitnessTrackerApp
+from app import app, workouts
 
-@pytest.fixture(scope="function")
-def tracker_app():
-    """
-    Fixture to create and cleanup FitnessTrackerApp instance.
-    """
-    root = tk.Tk()
-    root.withdraw()
-    app = FitnessTrackerApp(root)
-    yield app
-    root.destroy()
+@pytest.fixture
+def client():
+    """Create a test client for the Flask app."""
+    # Ensure the workouts list is empty before each test
+    workouts.clear()
+    app.config['TESTING'] = True
+    with app.test_client() as client:
+        yield client
